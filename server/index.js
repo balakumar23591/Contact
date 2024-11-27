@@ -32,6 +32,40 @@ db.connect((err) => {
 app.post('/api/contact', (req, res) => {
     // console.log(req.body);
     const { name, email, phone, location, dob } = req.body;
+
+    // validation
+    if (!name || !email || !phone || !location || !dob) {
+        return res.status(400).send('All fields are required');
+    }
+
+    // name validation
+    if (name.length < 3) {
+        return res.status(400).send('Name must be at least 3 characters long');
+    }
+
+    // email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        return res.status(400).send('Invalid email format');
+    }
+
+    // phone validation
+    const phoneRegex = /^\d{10}$/;
+    if (!phoneRegex.test(phone)) {
+        return res.status(400).send('Invalid phone number format');
+    }
+
+    // location validation
+    if (location.length < 3) {
+        return res.status(400).send('Location must be at least 3 characters long');
+    }
+
+    // dob validation
+    const dobRegex = /^\d{4}-\d{2}-\d{2}$/;
+    if (!dobRegex.test(dob)) {
+        return res.status(400).send('Invalid date of birth format');
+    }
+
     const sql = 'INSERT INTO contactForm (name, email, phone, location, dob) VALUES (?, ?, ?, ?, ?)';
     db.query(sql, [name, email, phone, location, dob], (err, result) => {
         if (err) {
