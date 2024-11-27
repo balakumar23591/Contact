@@ -8,7 +8,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 // Middleware
-app.use(bodyParser.json());
+app.use(express.urlencoded({ extended: true }));
 
 // MySQL connection
 const db = mysql.createConnection({
@@ -30,6 +30,7 @@ db.connect((err) => {
 
 // 1. Add a new contact
 app.post('/api/contact', (req, res) => {
+    // console.log(req.body);
     const { name, email, phone, location, dob } = req.body;
     const sql = 'INSERT INTO contactForm (name, email, phone, location, dob) VALUES (?, ?, ?, ?, ?)';
     db.query(sql, [name, email, phone, location, dob], (err, result) => {
@@ -37,6 +38,7 @@ app.post('/api/contact', (req, res) => {
             console.error(err);
             return res.status(500).send('Failed to add contact');
         }
+        console.log("Contact added successfully");
         res.status(201).send({ id: result.insertId, message: 'Contact added successfully' });
     });
 });

@@ -1,5 +1,7 @@
-#SQL
+npm install express body-parser mysql dotenv
 
+
+#SQL
 CREATE TABLE contactForm (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255),
@@ -8,3 +10,6 @@ CREATE TABLE contactForm (
     location VARCHAR(255),
     dob DATE
 );
+
+Date Format
+YYYY-MM-DD
